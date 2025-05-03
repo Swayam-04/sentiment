@@ -3,105 +3,81 @@
 <head>
     <title>Sentiment Analysis</title>
     <style>
-        /* Modern styling - all CSS embedded */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
             margin: 0;
             padding: 20px;
-            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
         }
-
+        
         .container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             padding: 30px;
             width: 100%;
             max-width: 500px;
+            box-sizing: border-box;
         }
-
+        
         h1 {
-            color: #2c3e50;
+            color: #333;
             text-align: center;
-            margin-bottom: 25px;
-            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 20px;
         }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
+        
         textarea {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #e0e5ec;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             resize: vertical;
-            min-height: 120px;
-            transition: all 0.3s ease;
+            min-height: 100px;
+            margin-bottom: 15px;
+            font-family: inherit;
+            font-size: 14px;
+            box-sizing: border-box;
         }
-
-        textarea:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-
+        
         button {
-            background: #3498db;
+            background-color: #4CAF50;
             color: white;
             border: none;
-            padding: 14px 20px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s;
         }
-
+        
         button:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
+            background-color: #45a049;
         }
-
+        
         .result {
             margin-top: 20px;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 4px;
+            background-color: #e8f5e9;
+            color: #2e7d32;
             text-align: center;
-            font-weight: 500;
             display: {% if sentiment %}block{% else %}none{% endif %};
         }
-
-        .positive {
-            background: rgba(46, 204, 113, 0.15);
-            color: #27ae60;
-            border: 1px solid #2ecc71;
+        
+        .result h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
         }
-
-        .neutral {
-            background: rgba(241, 196, 15, 0.15);
-            color: #f39c12;
-            border: 1px solid #f1c40f;
-        }
-
-        .negative {
-            background: rgba(231, 76, 60, 0.15);
-            color: #c0392b;
-            border: 1px solid #e74c3c;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
+        
+        .result p {
+            margin-bottom: 0;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -114,15 +90,17 @@
         </form>
         
         {% if sentiment %}
-        <div class="result {{ sentiment.lower() }}">
+        <div class="result">
             <h3>Result: {{ sentiment }}</h3>
-            {% if sentiment == 'POSITIVE' %}
-                <p>😊 Positive sentiment detected!</p>
-            {% elif sentiment == 'NEUTRAL' %}
-                <p>😐 Neutral sentiment detected</p>
-            {% else %}
-                <p>😟 Negative sentiment detected</p>
-            {% endif %}
+            <p>
+                {% if sentiment == 'POSITIVE' %}
+                    Positive sentiment detected!
+                {% elif sentiment == 'NEUTRAL' %}
+                    Neutral sentiment detected
+                {% else %}
+                    Negative sentiment detected
+                {% endif %}
+            </p>
         </div>
         {% endif %}
     </div>
