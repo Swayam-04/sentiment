@@ -1,28 +1,156 @@
 <!DOCTYPE html>
 <html>
-<head><title>Sentiment App</title></head>
+<head>
+  <title>Sentiment Analysis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Modern Gradient Background */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Card Design */
+    .container {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #3a4a6d;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+
+    /* Input Styling */
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e5ec;
+      border-radius: 8px;
+      font-size: 16px;
+      resize: none;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #4a6cf7;
+      box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+    }
+
+    /* Button Styling */
+    button {
+      background: #4a6cf7;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    button:hover {
+      background: #3a5bd9;
+      transform: translateY(-2px);
+    }
+
+    /* Result Display */
+    .result {
+      margin-top: 2rem;
+      padding: 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+      display: none;
+    }
+
+    .positive {
+      background: rgba(46, 204, 113, 0.2);
+      color: #2ecc71;
+    }
+
+    .neutral {
+      background: rgba(52, 152, 219, 0.2);
+      color: #3498db;
+    }
+
+    .negative {
+      background: rgba(231, 76, 60, 0.2);
+      color: #e74c3c;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      .container {
+        width: 85%;
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
 <body>
-  <form method="post">
-    <textarea name="text" rows="5" cols="50" placeholder="Enter text..."></textarea><br>
-    <input type="submit" value="Analyze Sentiment">
-  </form>
-  <h2>
+  <div class="container">
+    <h1>Sentiment Analyzer</h1>
+    <textarea id="text-input" placeholder="Type something like 'I love this product!'"></textarea>
+    <button onclick="analyzeSentiment()">Analyze Sentiment</button>
+    <div id="result" class="result"></div>
+  </div>
 
-    <p>
-      Sentiment: {{ sentiment }}
-      {% if sentiment == 'POSITIVE' %}
-        😊
-      {% elif sentiment == 'NEGATIVE' %}
-        😞
-      {% elif sentiment == 'NEUTRAL' %}
-        😐
-      {% elif sentiment == 'MIXED' %}
-        😕
-      {% else %}
-        ❓
-      {% endif %}
-    </p>
+  <script>
+    function analyzeSentiment() {
+      const text = document.getElementById('text-input').value;
+      const resultDiv = document.getElementById('result');
+      
+      // Show loading state
+      resultDiv.style.display = 'block';
+      resultDiv.className = 'result';
+      resultDiv.innerHTML = 'Analyzing...';
 
-  </h2>
+      fetch('/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: text })
+      })
+      .then(response => response.json())
+      .then(data => {
+        resultDiv.className = 'result ' + data.sentiment.toLowerCase();
+        resultDiv.innerHTML = `
+          <h3>${data.sentiment} (${data.polarity.toFixed(2)})</h3>
+          <p>${getSentimentMessage(data.sentiment)}</p>
+        `;
+      })
+      .catch(error => {
+        resultDiv.className = 'result negative';
+        resultDiv.innerHTML = 'Error analyzing text. Please try again.';
+      });
+    }
+
+    function getSentimentMessage(sentiment) {
+      const messages = {
+        'POSITIVE': 'This sounds positive! 😊',
+        'NEUTRAL': 'This seems neutral. 😐',
+        'NEGATIVE': 'This sounds negative. 😟'
+      };
+      return messages[sentiment] || '';
+    }
+  </script>
 </body>
 </html>
