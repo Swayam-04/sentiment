@@ -1,156 +1,130 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Sentiment Analysis</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    /* Modern Gradient Background */
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+    <title>Sentiment Analysis</title>
+    <style>
+        /* Modern styling - all CSS embedded */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    /* Card Design */
-    .container {
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      padding: 2rem;
-      width: 90%;
-      max-width: 500px;
-      text-align: center;
-    }
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+        }
 
-    h1 {
-      color: #3a4a6d;
-      margin-bottom: 1.5rem;
-      font-weight: 600;
-    }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
 
-    /* Input Styling */
-    textarea {
-      width: 100%;
-      padding: 12px;
-      border: 2px solid #e0e5ec;
-      border-radius: 8px;
-      font-size: 16px;
-      resize: none;
-      margin-bottom: 1rem;
-      transition: all 0.3s ease;
-    }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-    textarea:focus {
-      outline: none;
-      border-color: #4a6cf7;
-      box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
-    }
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e5ec;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 120px;
+            transition: all 0.3s ease;
+        }
 
-    /* Button Styling */
-    button {
-      background: #4a6cf7;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
 
-    button:hover {
-      background: #3a5bd9;
-      transform: translateY(-2px);
-    }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-    /* Result Display */
-    .result {
-      margin-top: 2rem;
-      padding: 1rem;
-      border-radius: 8px;
-      font-weight: 500;
-      display: none;
-    }
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
 
-    .positive {
-      background: rgba(46, 204, 113, 0.2);
-      color: #2ecc71;
-    }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            display: {% if sentiment %}block{% else %}none{% endif %};
+        }
 
-    .neutral {
-      background: rgba(52, 152, 219, 0.2);
-      color: #3498db;
-    }
+        .positive {
+            background: rgba(46, 204, 113, 0.15);
+            color: #27ae60;
+            border: 1px solid #2ecc71;
+        }
 
-    .negative {
-      background: rgba(231, 76, 60, 0.2);
-      color: #e74c3c;
-    }
+        .neutral {
+            background: rgba(241, 196, 15, 0.15);
+            color: #f39c12;
+            border: 1px solid #f1c40f;
+        }
 
-    /* Responsive Design */
-    @media (max-width: 600px) {
-      .container {
-        width: 85%;
-        padding: 1.5rem;
-      }
-    }
-  </style>
+        .negative {
+            background: rgba(231, 76, 60, 0.15);
+            color: #c0392b;
+            border: 1px solid #e74c3c;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Sentiment Analyzer</h1>
-    <textarea id="text-input" placeholder="Type something like 'I love this product!'"></textarea>
-    <button onclick="analyzeSentiment()">Analyze Sentiment</button>
-    <div id="result" class="result"></div>
-  </div>
-
-  <script>
-    function analyzeSentiment() {
-      const text = document.getElementById('text-input').value;
-      const resultDiv = document.getElementById('result');
-      
-      // Show loading state
-      resultDiv.style.display = 'block';
-      resultDiv.className = 'result';
-      resultDiv.innerHTML = 'Analyzing...';
-
-      fetch('/analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text: text })
-      })
-      .then(response => response.json())
-      .then(data => {
-        resultDiv.className = 'result ' + data.sentiment.toLowerCase();
-        resultDiv.innerHTML = `
-          <h3>${data.sentiment} (${data.polarity.toFixed(2)})</h3>
-          <p>${getSentimentMessage(data.sentiment)}</p>
-        `;
-      })
-      .catch(error => {
-        resultDiv.className = 'result negative';
-        resultDiv.innerHTML = 'Error analyzing text. Please try again.';
-      });
-    }
-
-    function getSentimentMessage(sentiment) {
-      const messages = {
-        'POSITIVE': 'This sounds positive! 😊',
-        'NEUTRAL': 'This seems neutral. 😐',
-        'NEGATIVE': 'This sounds negative. 😟'
-      };
-      return messages[sentiment] || '';
-    }
-  </script>
+    <div class="container">
+        <h1>Sentiment Analysis</h1>
+        <form method="POST">
+            <textarea name="text" placeholder="Type your text here..." required>{% if text %}{{ text }}{% endif %}</textarea>
+            <button type="submit">Analyze</button>
+        </form>
+        
+        {% if sentiment %}
+        <div class="result {{ sentiment.lower() }}">
+            <h3>Result: {{ sentiment }}</h3>
+            {% if sentiment == 'POSITIVE' %}
+                <p>😊 Positive sentiment detected!</p>
+            {% elif sentiment == 'NEUTRAL' %}
+                <p>😐 Neutral sentiment detected</p>
+            {% else %}
+                <p>😟 Negative sentiment detected</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
 </body>
 </html>
