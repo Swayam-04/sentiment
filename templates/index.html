@@ -3,7 +3,6 @@
 <head>
     <title>Sentiment Analysis</title>
     <style>
-        /* Modern styling - all CSS embedded */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -13,6 +12,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            box-sizing: border-box;
         }
 
         .container {
@@ -22,8 +22,9 @@
             padding: 30px;
             width: 100%;
             max-width: 500px;
+            box-sizing: border-box;
             border: 1px solid #e0e5ec; /* Added subtle border */
-            overflow: hidden; 
+            overflow: hidden; /* Prevents content from bleeding outside */
         }
 
         h1 {
@@ -31,6 +32,7 @@
             text-align: center;
             margin-bottom: 25px;
             font-weight: 600;
+            margin-top: 0;
         }
 
         form {
@@ -47,7 +49,8 @@
             font-size: 16px;
             resize: vertical;
             min-height: 120px;
-            transition: all 0.3s ease;
+            box-sizing: border-box;
+            font-family: inherit;
         }
 
         textarea:focus {
@@ -66,6 +69,7 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
+            border: 2px solid transparent; /* Ensures consistent sizing */
         }
 
         button:hover {
@@ -80,29 +84,36 @@
             text-align: center;
             font-weight: 500;
             display: {% if sentiment %}block{% else %}none{% endif %};
+            border: 1px solid; /* Dynamic border color based on sentiment */
         }
 
         .positive {
             background: rgba(46, 204, 113, 0.15);
             color: #27ae60;
-            border: 1px solid #2ecc71;
+            border-color: #2ecc71 !important;
         }
 
         .neutral {
             background: rgba(241, 196, 15, 0.15);
             color: #f39c12;
-            border: 1px solid #f1c40f;
+            border-color: #f1c40f !important;
         }
 
         .negative {
             background: rgba(231, 76, 60, 0.15);
             color: #c0392b;
-            border: 1px solid #e74c3c;
+            border-color: #e74c3c !important;
         }
 
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
+                margin: 10px;
+                width: calc(100% - 20px);
+            }
+            
+            body {
+                padding: 10px;
             }
         }
     </style>
@@ -119,11 +130,11 @@
         <div class="result {{ sentiment.lower() }}">
             <h3>Result: {{ sentiment }}</h3>
             {% if sentiment == 'POSITIVE' %}
-                <p>😊 Positive sentiment detected!</p>
+                <p>Positive sentiment detected!</p>
             {% elif sentiment == 'NEUTRAL' %}
-                <p>😐 Neutral sentiment detected</p>
+                <p>Neutral sentiment detected</p>
             {% else %}
-                <p>😟 Negative sentiment detected</p>
+                <p>Negative sentiment detected</p>
             {% endif %}
         </div>
         {% endif %}
