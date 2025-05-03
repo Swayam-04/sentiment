@@ -4,80 +4,117 @@
     <title>Sentiment Analysis</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             margin: 0;
             padding: 20px;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            box-sizing: border-box;
         }
-        
+
         .container {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             padding: 30px;
             width: 100%;
             max-width: 500px;
             box-sizing: border-box;
+            border: 1px solid #e0e5ec; /* Added subtle border */
+            overflow: hidden; /* Prevents content from bleeding outside */
         }
-        
+
         h1 {
-            color: #333;
+            color: #2c3e50;
             text-align: center;
+            margin-bottom: 25px;
+            font-weight: 600;
             margin-top: 0;
-            margin-bottom: 20px;
         }
-        
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
         textarea {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 15px;
+            border: 2px solid #e0e5ec;
+            border-radius: 8px;
+            font-size: 16px;
             resize: vertical;
-            min-height: 100px;
-            margin-bottom: 15px;
-            font-family: inherit;
-            font-size: 14px;
+            min-height: 120px;
             box-sizing: border-box;
+            font-family: inherit;
         }
-        
+
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
         button {
-            background-color: #4CAF50;
+            background: #3498db;
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
+            padding: 14px 20px;
+            border-radius: 8px;
             font-size: 16px;
-            transition: background-color 0.3s;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent; /* Ensures consistent sizing */
         }
-        
+
         button:hover {
-            background-color: #45a049;
+            background: #2980b9;
+            transform: translateY(-2px);
         }
-        
+
         .result {
             margin-top: 20px;
             padding: 15px;
-            border-radius: 4px;
-            background-color: #e8f5e9;
-            color: #2e7d32;
+            border-radius: 8px;
             text-align: center;
+            font-weight: 500;
             display: {% if sentiment %}block{% else %}none{% endif %};
+            border: 1px solid; /* Dynamic border color based on sentiment */
         }
-        
-        .result h3 {
-            margin-top: 0;
-            margin-bottom: 10px;
+
+        .positive {
+            background: rgba(46, 204, 113, 0.15);
+            color: #27ae60;
+            border-color: #2ecc71 !important;
         }
-        
-        .result p {
-            margin-bottom: 0;
-            font-size: 16px;
+
+        .neutral {
+            background: rgba(241, 196, 15, 0.15);
+            color: #f39c12;
+            border-color: #f1c40f !important;
+        }
+
+        .negative {
+            background: rgba(231, 76, 60, 0.15);
+            color: #c0392b;
+            border-color: #e74c3c !important;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+                width: calc(100% - 20px);
+            }
+            
+            body {
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -90,17 +127,15 @@
         </form>
         
         {% if sentiment %}
-        <div class="result">
+        <div class="result {{ sentiment.lower() }}">
             <h3>Result: {{ sentiment }}</h3>
-            <p>
-                {% if sentiment == 'POSITIVE' %}
-                    Positive sentiment detected!
-                {% elif sentiment == 'NEUTRAL' %}
-                    Neutral sentiment detected
-                {% else %}
-                    Negative sentiment detected
-                {% endif %}
-            </p>
+            {% if sentiment == 'POSITIVE' %}
+                <p>Positive sentiment detected!</p>
+            {% elif sentiment == 'NEUTRAL' %}
+                <p>Neutral sentiment detected</p>
+            {% else %}
+                <p>Negative sentiment detected</p>
+            {% endif %}
         </div>
         {% endif %}
     </div>
