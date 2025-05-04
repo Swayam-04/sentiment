@@ -6,8 +6,6 @@
 
 A web application that analyzes text sentiment using Natural Language Processing (NLP) with Flask and TextBlob.
 
-![App Screenshot](https://i.imgur.com/EXAMPLE_SCREENSHOT.png)
-
 ## Features
 
 - Real-time sentiment analysis (Positive/Negative/Neutral)
@@ -23,19 +21,17 @@ A web application that analyzes text sentiment using Natural Language Processing
    cd sentiment
 Create and activate virtual environment:
 
-bash
 python -m venv venv
-source venv/bin/activate  # Linux/Mac
 venv\Scripts\activate     # Windows
+
 Install dependencies:
 
-bash
 pip install -r requirements.txt
 python -m textblob.download_corpora
+
 Usage
 Run the development server:
 
-bash
 python run.py
 Access the web interface at http://localhost:5000
 
