@@ -48,13 +48,6 @@ Create new Web Service
 
 Set build command: pip install -r requirements.txt
 
-Set start command: gunicorn app:app
-
-To Heroku:
-bash
-heroku create
-git push heroku main
-heroku open
 Project Structure
 sentiment/
 ├── app/
@@ -65,35 +58,11 @@ sentiment/
 ├── requirements.txt
 ├── Procfile
 └── runtime.txt
+
 Dependencies
 Flask 2.3.2
-
 TextBlob 0.17.1
-
 Werkzeug 2.3.7
-
-Gunicorn (for production)
 
 License
 MIT License - See LICENSE for details.
-
-
-### Key Features of This README:
-1. **Badges** - Visual indicators for technologies used
-2. **Clear Sections** - Installation, Usage, Deployment separated
-3. **Code Formatting** - Proper markdown code blocks
-4. **Visual Structure** - Directory tree visualization
-5. **API Documentation** - Clear endpoint specification
-6. **Deployment Guides** - For both Render and Heroku
-
-To use:
-1. Save this as `README.md` in your project root
-2. Replace `EXAMPLE_SCREENSHOT.png` with an actual screenshot
-3. Update any version numbers if needed
-4. Add your own LICENSE file if using something other than MIT
-
-Would you like me to add any additional sections like:
-- Contribution guidelines
-- Troubleshooting tips
-- Roadmap/features planned
-- More detailed API documentation?
